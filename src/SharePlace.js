@@ -1,13 +1,23 @@
 import { Modal } from './ui/Modal'
+import { Map } from './ui/Map'
+
 
 class PlaceFinder {
   constructor() {
     const addressForm = document.querySelector('form')
     const locateUserBtn = document.getElementById('locate-btn')
 
-    locateUserBtn.addEventListener('click', this.locateUserHandler)
+    locateUserBtn.addEventListener('click', this.locateUserHandler.bind(this))
     addressForm.addEventListener('submit', this.findAddressHandler)
 
+  }
+
+  selectPlace(coordinates) {
+    if (this.map) {
+      this.map.render(coordinates)
+    } else {
+      this.map = new Map(coordinates)
+    }
   }
 
   locateUserHandler() {
@@ -28,6 +38,7 @@ class PlaceFinder {
           lng: successResult.coords.longitude
 
         }
+        this.selectPlace(coordinates)
 
         console.log(coordinates)
       },
